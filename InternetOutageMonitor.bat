@@ -1,4 +1,5 @@
-@ECHO OFF&SETLOCAL EnableDelayedExpansion
+@ECHO OFF
+SETLOCAL EnableDelayedExpansion
 MODE 120,31
 COLOR 1B
 TITLE Internet Uptime Monitoring - Initialising
@@ -36,7 +37,14 @@ IF !ERRORLEVEL! EQU 0 (
 	SET /A Minutes+=1
 	SET "InternetConnectedFlag=false"
 )
-TITLE Internet Uptime Monitoring - I:!InternetConnectedFlag! M:!Minutes! IOSP:!InternetOutageStartPoint!
+IF /i "!InternetConnectedFlag!"=="false" (
+	TITLE Internet Uptime Monitoring - Internet not available since !Minutes! minutes. Start:!InternetOutageStartPoint!
+) ELSE IF DEFINED InternetOutageStartPoint (
+	TITLE Internet Uptime Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
+) ELSE (
+	TITLE Internet Uptime Monitoring - Internet available.
+)
+
 EXIT /B
 
 :GetDate
