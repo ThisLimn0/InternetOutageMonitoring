@@ -126,7 +126,7 @@ SET "NORECORD_L19=        €‹                    ‹€        "
 EXIT /B
 
 :DecideConnType
-::: Get Router IP 
+::: Get Router IP address
 FOR /f "tokens=2,3 delims={,}" %%A IN ('"WMIC NICConfig where IPEnabled="True" get DefaultIPGateway /value | find "I" "') DO (
 	SET "RouterIPv4=%%~A"
 	SET "RouterIPv6=%%~B"
@@ -273,7 +273,6 @@ IF /i "!InternetConnectedFlag!"=="false" (
 			)
 		)
 	)
-	
 	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
 		IF DEFINED NORECORD_L%%A (
 			ECHO.!SPACER!!NORECORD_L%%A!
