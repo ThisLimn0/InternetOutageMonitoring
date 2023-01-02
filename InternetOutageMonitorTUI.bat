@@ -14,6 +14,8 @@ SET "DefaultTimeout=60"
 SET "Minutes=0"
 SET "InternetConnectedFlag=true"
 
+CALL :SetGraphics
+
 :MAIN
 SET "LogFile=.\InternetUptime!DATE!.log"
 CALL :GetInternetConnection
@@ -42,7 +44,7 @@ FOR %%X IN (!Server1! !Server2! !Server3!) DO (
 		IF /i "!InternetConnectedFlag!"=="false" (
 			CALL :GetDate
 			CALL :GetTime
-			CALL :LogData
+			CALL :LogProgress
 			ECHO.Event was written into "!LogFile!".
 			ECHO.The connection was re-established.
 			SET /A "ModifiedTimeout-=2"
@@ -78,7 +80,7 @@ SET "MI=!TmpTime:~3,2!"
 SET "SS=!TmpTime:~6,2!"
 EXIT /B
 
-:LogData
+:LogProgress
 IF EXIST "!LogFile!" (
 	ECHO.[WARN][!DD!.!MO!.!YYYY! !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
 ) ELSE (
@@ -86,4 +88,10 @@ IF EXIST "!LogFile!" (
 	ECHO.-------------------------->>"!LogFile!"
 	ECHO.[WARN][!DD!.!MO!.!YYYY! !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
 )
+EXIT /B
+
+
+:SetGraphics
+SET "SPACER=                                    "
+SET "DIV_LINE=ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ"
 EXIT /B
