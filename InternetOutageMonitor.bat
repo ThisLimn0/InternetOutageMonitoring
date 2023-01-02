@@ -2,7 +2,7 @@
 SETLOCAL EnableDelayedExpansion
 MODE 120,31
 COLOR 1B
-TITLE Internet Uptime Monitoring - Initialising
+TITLE Internet Outage Monitoring - Initialising
 
 ::::::::::::::::::::::::::::::::::::::::::::
 SET "Server1=8.8.8.8" ::: Google Public DNS
@@ -19,12 +19,12 @@ SET "LogFile=.\InternetUptime!DATE!.log"
 CALL :GetInternetConnection
 
 IF /i "!InternetConnectedFlag!"=="false" (
-	TITLE Internet Uptime Monitoring - Internet not available since !Minutes! minutes. Start:!InternetOutageStartPoint!
+	TITLE Internet Outage Monitoring - Internet not available since !Minutes! minutes. Start:!InternetOutageStartPoint!
 	ECHO.No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!
 ) ELSE IF DEFINED InternetOutageStartPoint (
-	TITLE Internet Uptime Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
+	TITLE Internet Outage Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
 ) ELSE (
-	TITLE Internet Uptime Monitoring - Internet available.
+	TITLE Internet Outage Monitoring - Internet available.
 )
 
 TIMEOUT /T !ModifiedTimeout! /NOBREAK >NUL
@@ -82,7 +82,7 @@ EXIT /B
 IF EXIST "!LogFile!" (
 	ECHO.[WARN][!DD!.!MO!.!YYYY! !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
 ) ELSE (
-	ECHO.Internet Uptime Monitoring>"!LogFile!"
+	ECHO.Internet Outage Monitoring>"!LogFile!"
 	ECHO.-------------------------->>"!LogFile!"
 	ECHO.[WARN][!DD!.!MO!.!YYYY! !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
 )

@@ -1,6 +1,6 @@
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
-TITLE Internet Uptime Monitoring - Initialising
+TITLE Internet Outage Monitoring - Initialising
 COLOR 1B
 
 ::::::::::::::::::::::::::::::::::::::::::::
@@ -18,7 +18,7 @@ CALL :DecideConnType
 CALL :InitDispEng
 
 :MAIN
-SET "LogFile=.\InternetUptime!DATE!.log"
+SET "LogFile=.\InternetOutage!DATE!.log"
 CALL :GetInternetConnection
 CALL :Display
 TIMEOUT /T !ModifiedTimeout! /NOBREAK >NUL
@@ -76,7 +76,7 @@ EXIT /B
 IF EXIST "!LogFile!" (
 	ECHO.[WARN][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
 ) ELSE (
-	ECHO.Internet Uptime Monitoring>"!LogFile!"
+	ECHO.Internet Outage Monitoring>"!LogFile!"
 	ECHO.-------------------------->>"!LogFile!"
 	ECHO.[WARN][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
 )
@@ -114,15 +114,29 @@ EXIT /B
 
 :DecideConnType
 ::: Get Router IP 
-FOR /f "tokens=2 delims={,}" %%A IN ('"WMIC NICConfig where IPEnabled="True" get DefaultIPGateway /value | find "I" "') DO (
+FOR /f "tokens=2,3 delims={,}" %%A IN ('"WMIC NICConfig where IPEnabled="True" get DefaultIPGateway /value | find "I" "') DO (
 	SET "RouterIPv4=%%~A"
+	SET "RouterIPv6=%%~B"
 )
-::: Latency based connection type guess
-PING %RouterIPv4% -n 1 -4 | FINDSTR /C:"1ms" 1>nul
-IF ERRORLEVEL 1 (
-    PING %RouterIPv4% -n 1 -4 | FINDSTR /C:"TTL=" 1>nul
-    IF ERRORLEVEL 1 ( SET "ConnType=Timeout" ) ELSE ( SET "ConnType=WiFi" )
-) ELSE ( SET "ConnType=Ethernet" )
+IF NOT DEFINED RouterIPv4 (
+	IF NOT DEFINED RouterIPv6 (
+		SET "ConnType=Unknown"
+		EXIT /b
+	)
+	::: Latency based connection type guess - IPv6
+	PING %RouterIPv6% -n 1 -6 | FINDSTR /C:"1ms" 1>nul
+	IF ERRORLEVEL 1 (
+		PING %RouterIPv6% -n 1 -6 | FINDSTR /C:"TTL=" 1>nul
+		IF ERRORLEVEL 1 ( SET "ConnType=Timeout" ) ELSE ( SET "ConnType=WiFi" )
+	) ELSE ( SET "ConnType=Ethernet" )
+) ELSE (
+	::: Latency based connection type guess - IPv4
+	PING %RouterIPv4% -n 1 -4 | FINDSTR /C:"1ms" 1>nul
+	IF ERRORLEVEL 1 (
+		PING %RouterIPv4% -n 1 -4 | FINDSTR /C:"TTL=" 1>nul
+		IF ERRORLEVEL 1 ( SET "ConnType=Timeout" ) ELSE ( SET "ConnType=WiFi" )
+	) ELSE ( SET "ConnType=Ethernet" )
+)
 EXIT /B
 
 :InitDispEng
@@ -146,7 +160,7 @@ EXIT /B
 :Display
 CLS
 IF /i "!InternetConnectedFlag!"=="false" (
-	TITLE Internet Uptime Monitoring - Internet not available since !Minutes! minutes ago. Start: !InternetOutageStartPoint!
+	TITLE Internet Outage Monitoring - Internet not available since !Minutes! minutes ago. Start: !InternetOutageStartPoint!
 	SET "L0=!SPACER!!STATUS_BROKEN!"
 	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 		IF DEFINED L%%A (
@@ -160,7 +174,7 @@ IF /i "!InternetConnectedFlag!"=="false" (
 	)
 	REM ECHO.No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!
 ) ELSE IF DEFINED InternetOutageStartPoint (
-	TITLE Internet Uptime Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
+	TITLE Internet Outage Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
 	SET "L0=!SPACER!!STATUS_INTACT!"
 	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 		IF DEFINED L%%A (
@@ -173,7 +187,7 @@ IF /i "!InternetConnectedFlag!"=="false" (
 		ECHO.
 	)
 ) ELSE (
-	TITLE Internet Uptime Monitoring - Internet available.
+	TITLE Internet Outage Monitoring - Internet available.
 	SET "L0=!SPACER!!STATUS_INTACT!"
 	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 		IF DEFINED L%%A (
@@ -188,4 +202,8 @@ IF /i "!InternetConnectedFlag!"=="false" (
 		) ELSE ( ECHO. )
 	)
 )
+EXIT /B
+
+:ManageLogging
+
 EXIT /B
