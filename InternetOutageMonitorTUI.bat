@@ -37,8 +37,8 @@ FOR %%X IN (!Server1! !Server2! !Server3!) DO (
 			CALL :GetDate
 			CALL :GetTime
 			CALL :LogData
-			ECHO.Event was written into "!LogFile!".
-			ECHO.The connection was re-established.
+			REM ECHO.Event was written into "!LogFile!".
+			REM ECHO.The connection was re-established.
 			SET /A "ModifiedTimeout-=2"
 		)
 		SET "InternetConnectedFlag=true"

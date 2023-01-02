@@ -15,7 +15,7 @@ SET "Minutes=0"
 SET "InternetConnectedFlag=true"
 
 :MAIN
-SET "LogFile=.\InternetUptime!DATE!.log"
+SET "LogFile=.\InternetOutage!DATE!.log"
 CALL :GetInternetConnection
 
 IF /i "!InternetConnectedFlag!"=="false" (
