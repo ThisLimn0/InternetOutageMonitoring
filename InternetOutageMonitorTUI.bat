@@ -35,6 +35,8 @@ FOR %%X IN (!Server1! !Server2! !Server3!) DO (
 	SET /A "ModifiedTimeout-=2"
 	IF !ERRORLEVEL! EQU 0 (
 		IF /i "!InternetConnectedFlag!"=="false" (
+			CALL :GetDate
+			CALL :GetTime
 			CALL :LogData
 			REM ECHO.Event was written into "!LogFile!".
 			REM ECHO.The connection was re-established.
@@ -46,7 +48,6 @@ FOR %%X IN (!Server1! !Server2! !Server3!) DO (
 		IF  /i "!InternetConnectedFlag!"=="true" (
 			CALL :GetDate
 			CALL :GetTime
-			CALL :LogData
 			SET "InternetOutageStartPoint=!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!"
 			SET "InternetConnectedFlag=false"
 		)
@@ -76,11 +77,11 @@ EXIT /B
 CALL :GetDate
 CALL :GetTime
 IF EXIST "!LogFile!" (
-	ECHO.[WARN][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
+	ECHO.[WARN][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!>>"!LogFile!"
 ) ELSE (
 	ECHO.Internet Outage Monitoring>"!LogFile!"
 	ECHO.-------------------------->>"!LogFile!"
-	ECHO.[WARN][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint! >>"!LogFile!"
+	ECHO.[WARN][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!>>"!LogFile!"
 )
 EXIT /B
 
@@ -94,32 +95,32 @@ CALL :GetDate
 CALL :GetTime
 IF "!ConnSwitchTo!"=="Timeout" (
 	IF EXIST "!LogFile!" (
-		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchFrom! timed out. >>"!LogFile!"
+		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchFrom! timed out.>>"!LogFile!"
 		EXIT /B
 	) ELSE (
 		ECHO.Internet Outage Monitoring>"!LogFile!"
 		ECHO.-------------------------->>"!LogFile!"
-		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchFrom! timed out. >>"!LogFile!"
+		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchFrom! timed out.>>"!LogFile!"
 		EXIT /B
 	)
 ) ELSE IF "!ConnSwitchFrom!"=="Timeout" (
 	IF EXIST "!LogFile!" (
-		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchTo! was reestablished. >>"!LogFile!"
+		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchTo! was reestablished.>>"!LogFile!"
 		EXIT /B
 	) ELSE (
 		ECHO.Internet Outage Monitoring>"!LogFile!"
 		ECHO.-------------------------->>"!LogFile!"
-		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchTo! was reestablished. >>"!LogFile!"
+		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection !ConnSwitchTo! was reestablished.>>"!LogFile!"
 		EXIT /B
 	)
 )
 IF EXIST "!LogFile!" (
-	ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection switched from !ConnSwitchFrom! to !ConnSwitchTo!. >>"!LogFile!"
+	ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection switched from !ConnSwitchFrom! to !ConnSwitchTo!.>>"!LogFile!"
 	EXIT /B
 ) ELSE (
 	ECHO.Internet Outage Monitoring>"!LogFile!"
 	ECHO.-------------------------->>"!LogFile!"
-	ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection switched from !ConnSwitchFrom! to !ConnSwitchTo!. >>"!LogFile!"
+	ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection switched from !ConnSwitchFrom! to !ConnSwitchTo!.>>"!LogFile!"
 	EXIT /B
 )
 EXIT /B
@@ -170,10 +171,12 @@ IF DEFINED ConnType (
 	SET "OldConnType=!ConnType!"
 	SET "LogSwitch=true"
 )
-::: Get Router IP address
-FOR /f "tokens=2,3 delims={,}" %%A IN ('"WMIC NICConfig where IPEnabled="True" get DefaultIPGateway /value | find "I" "') DO (
-	SET "RouterIPv4=%%~A"
-	SET "RouterIPv6=%%~B"
+::: Get Router IP address once
+IF NOT DEFINED RouterIPv4 (
+	FOR /f "tokens=2,3 delims={,}" %%A IN ('"WMIC NICConfig where IPEnabled="True" get DefaultIPGateway /value | find "I" "') DO (
+		SET "RouterIPv4=%%~A"
+		SET "RouterIPv6=%%~B"
+	)
 )
 IF NOT DEFINED RouterIPv4 (
 	IF NOT DEFINED RouterIPv6 (
@@ -197,6 +200,18 @@ IF NOT DEFINED RouterIPv4 (
 IF "!LogSwitch!"=="true" (
 	IF "!OldConnType!" NEQ "!ConnType!" (
 		CALL :LogConnSwitch "!OldConnType!" "!ConnType!"
+	)
+) ELSE (
+	CALL :GetDate
+	CALL :GetTime
+	IF EXIST "!LogFile!" (
+		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Initial detected connection type: !ConnType!>>"!LogFile!"
+		EXIT /B
+	) ELSE (
+		ECHO.Internet Outage Monitoring>"!LogFile!"
+		ECHO.-------------------------->>"!LogFile!"
+		ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Initial detected connection type: !ConnType!>>"!LogFile!"
+		EXIT /B
 	)
 )
 EXIT /B
