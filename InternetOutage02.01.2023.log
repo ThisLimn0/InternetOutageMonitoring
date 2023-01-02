@@ -1,0 +1,10 @@
+Internet Outage Monitoring
+--------------------------
+[INFO][02.01.2023 - 20:29:39] Connection switched from WiFi to Ethernet. 
+[INFO][02.01.2023 - 20:30:38] Connection Ethernet timed out. 
+[INFO][02.01.2023 - 20:30:38] Connection switched from Ethernet to Timeout. 
+[WARN][02.01.2023 - 20:30:39] No connection to the Internet. This happened 0 minutes ago. Start of the outage:  
+[INFO][02.01.2023 - 20:31:35] Connection Ethernet was reestablished. 
+[INFO][02.01.2023 - 20:31:35] Connection switched from Timeout to Ethernet. 
+[WARN][02.01.2023 - 20:31:36] No connection to the Internet. This happened 1 minutes ago. Start of the outage: 02.01.2023 - 20:30:39 
+[INFO][02.01.2023 - 20:32:32] Connection switched from Ethernet to WiFi. 
