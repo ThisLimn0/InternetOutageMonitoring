@@ -83,6 +83,17 @@ IF EXIST "!LogFile!" (
 )
 EXIT /B
 
+:LogConnSwitch
+SET "ConnSwitchFrom=%~1"
+SET "ConnSwitchTo=%~2"
+IF EXIST "!LogFile!" (
+	ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection switched from !ConnSwitchFrom! to !ConnSwitchTo! >>"!LogFile!"
+) ELSE (
+	ECHO.Internet Outage Monitoring>"!LogFile!"
+	ECHO.-------------------------->>"!LogFile!"
+	ECHO.[INFO][!DD!.!MO!.!YYYY! - !HH!:!MI!:!SS!] Connection switched from !ConnSwitchFrom! to !ConnSwitchTo! >>"!LogFile!"
+)
+EXIT /B
 
 :SetGraphics
 SET "SPACER=                                       "
@@ -126,6 +137,10 @@ SET "NORECORD_L19=        €‹                    ‹€        "
 EXIT /B
 
 :DecideConnType
+IF DEFINED ConnType (
+	SET "OldConnType=!ConnType!"
+	SET "LogSwitch=true"
+)
 ::: Get Router IP address
 FOR /f "tokens=2,3 delims={,}" %%A IN ('"WMIC NICConfig where IPEnabled="True" get DefaultIPGateway /value | find "I" "') DO (
 	SET "RouterIPv4=%%~A"
@@ -150,6 +165,11 @@ IF NOT DEFINED RouterIPv4 (
 		IF ERRORLEVEL 1 ( SET "ConnType=Timeout" ) ELSE ( SET "ConnType=WiFi" )
 	) ELSE ( SET "ConnType=Ethernet" )
 )
+IF "!LogSwitch!"=="true" (
+	IF "!OldConnType!" NEQ "!ConnType!" (
+		CALL :LogConnSwitch "!OldConnType!" "!ConnType!"
+	)
+)
 EXIT /B
 
 :InitDispEng
@@ -159,7 +179,7 @@ SET "WRITABLE_LINES=30"
 SET "WRITABLE_CHARS=119"
 SET "STATUS_PANEL_LINE_END=8"
 SET "LOG_PANEL_LINE_END=29"
-SET "L0=!SPACER!!STATUS_QUESTN! : !ConnType!"
+SET "L0=!SPACER!!STATUS_QUESTN!Connection type: !ConnType!"
 SET "L8=!DIV_LINE!"
 FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 	IF DEFINED L%%A (
