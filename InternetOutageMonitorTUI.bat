@@ -4,8 +4,8 @@ TITLE Internet Uptime Monitoring - Initialising
 COLOR 1B
 
 ::::::::::::::::::::::::::::::::::::::::::::
-SET "Server1=8.8.8.8" ::: Google Public DNS
-SET "Server2=1.0.0.1" ::: Cloudflare DNS
+SET "Server1=1.0.0.1" ::: Cloudflare DNS
+SET "Server2=8.8.8.8" ::: Google Public DNS
 SET "Server3=9.9.9.9" ::: Quad9 DNS
 ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -14,6 +14,7 @@ SET "Minutes=0"
 SET "InternetConnectedFlag=true"
 
 CALL :SetGraphics
+CALL :DecideConnType
 CALL :InitDispEng
 
 :MAIN
@@ -106,9 +107,22 @@ SET "QUESTIONMARK_L6=                   ÛÛ                   "
 SET "STATUS_INTACT=          Internet available.           "
 SET "STATUS_BROKEN=        Internet not available.         "
 SET "STATUS_QUESTN=                   ??                   "
-SET "NORECORD_L1=        Ûß                    ßÛ        "
-SET "NORECORD_L2=        Û No outages recorded. Û        "
-SET "NORECORD_L3=        ÛÜ                    ÜÛ        "
+SET "NORECORD_L17=        Ûß                    ßÛ        "
+SET "NORECORD_L18=        Û     No records.      Û        "
+SET "NORECORD_L19=        ÛÜ                    ÜÛ        "
+EXIT /B
+
+:DecideConnType
+::: Get Router IP 
+FOR /f "tokens=2 delims={,}" %%A IN ('"WMIC NICConfig where IPEnabled="True" get DefaultIPGateway /value | find "I" "') DO (
+	SET "RouterIPv4=%%~A"
+)
+::: Latency based connection type guess
+PING %RouterIPv4% -n 1 -4 | FINDSTR /C:"1ms" 1>nul
+IF ERRORLEVEL 1 (
+    PING %RouterIPv4% -n 1 -4 | FINDSTR /C:"TTL=" 1>nul
+    IF ERRORLEVEL 1 ( SET "ConnType=Timeout" ) ELSE ( SET "ConnType=WiFi" )
+) ELSE ( SET "ConnType=Ethernet" )
 EXIT /B
 
 :InitDispEng
@@ -116,11 +130,11 @@ MODE 120,31
 CLS
 SET "WRITABLE_LINES=30"
 SET "WRITABLE_CHARS=119"
-SET "STATUS_PANEL_LINES=8"
-SET "LOG_PANEL_LINES=22"
-SET "L0=!SPACER!!STATUS_QUESTN!"
+SET "STATUS_PANEL_LINE_END=8"
+SET "LOG_PANEL_LINE_END=29"
+SET "L0=!SPACER!!STATUS_QUESTN! : !ConnType!"
 SET "L8=!DIV_LINE!"
-FOR /L %%A IN (0,1,!STATUS_PANEL_LINES!) DO (
+FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 	IF DEFINED L%%A (
 		ECHO.!L%%A!
 	) ELSE IF DEFINED QUESTIONMARK_L%%A (
@@ -134,33 +148,44 @@ CLS
 IF /i "!InternetConnectedFlag!"=="false" (
 	TITLE Internet Uptime Monitoring - Internet not available since !Minutes! minutes ago. Start: !InternetOutageStartPoint!
 	SET "L0=!SPACER!!STATUS_BROKEN!"
-	FOR /L %%A IN (0,1,!STATUS_PANEL_LINES!) DO (
+	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 		IF DEFINED L%%A (
 			ECHO.!L%%A!
 		) ELSE IF DEFINED CABLE_BROKEN_L%%A (
 			ECHO.!SPACER!!CABLE_BROKEN_L%%A!
 		)
 	)
+	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
+		ECHO.
+	)
 	REM ECHO.No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!
 ) ELSE IF DEFINED InternetOutageStartPoint (
 	TITLE Internet Uptime Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
 	SET "L0=!SPACER!!STATUS_INTACT!"
-	FOR /L %%A IN (0,1,!STATUS_PANEL_LINES!) DO (
+	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 		IF DEFINED L%%A (
 			ECHO.!L%%A!
 		) ELSE IF DEFINED CABLE_INTACT_L%%A (
 			ECHO.!SPACER!!CABLE_INTACT_L%%A!
 		)
 	)
+	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
+		ECHO.
+	)
 ) ELSE (
 	TITLE Internet Uptime Monitoring - Internet available.
 	SET "L0=!SPACER!!STATUS_INTACT!"
-	FOR /L %%A IN (0,1,!STATUS_PANEL_LINES!) DO (
+	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
 		IF DEFINED L%%A (
 			ECHO.!L%%A!
 		) ELSE IF DEFINED CABLE_INTACT_L%%A (
 			ECHO.!SPACER!!CABLE_INTACT_L%%A!
 		)
+	)
+	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
+		IF DEFINED NORECORD_L%%A (
+			ECHO.!SPACER!!NORECORD_L%%A!
+		) ELSE ( ECHO. )
 	)
 )
 EXIT /B
