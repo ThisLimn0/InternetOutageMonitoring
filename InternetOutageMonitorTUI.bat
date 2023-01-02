@@ -172,7 +172,6 @@ EXIT /B
 
 :Display
 CLS
-:::Case: Internet broken
 IF /i "!InternetConnectedFlag!"=="false" (
 	:::Title
 	TITLE Internet Outage Monitoring - Internet not available since !Minutes! minutes ago. Start: !InternetOutageStartPoint!
@@ -209,8 +208,6 @@ IF /i "!InternetConnectedFlag!"=="false" (
 		ECHO.
 	)
 	REM ECHO.No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!
-	
-:::Case: Internet reconnected
 ) ELSE IF DEFINED InternetOutageStartPoint (
 	:::Title
 	TITLE Internet Outage Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
@@ -245,8 +242,6 @@ IF /i "!InternetConnectedFlag!"=="false" (
 	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
 		ECHO.
 	)
-	
-:::Case: Internet available	
 ) ELSE (
 	:::Title
 	TITLE Internet Outage Monitoring - Internet available.
