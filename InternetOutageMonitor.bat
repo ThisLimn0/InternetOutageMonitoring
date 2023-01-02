@@ -1,6 +1,6 @@
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
-MODE 120,31
+MODE 60,20
 COLOR 1B
 TITLE Internet Outage Monitoring - Initialising
 
@@ -19,8 +19,8 @@ SET "LogFile=.\InternetOutage!DATE!.log"
 CALL :GetInternetConnection
 
 IF /i "!InternetConnectedFlag!"=="false" (
-	TITLE Internet Outage Monitoring - Internet not available since !Minutes! minutes. Start:!InternetOutageStartPoint!
-	ECHO.No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!
+	TITLE No Internet. Since !Minutes! minutes ago. Start: !InternetOutageStartPoint!
+	ECHO.No Internet. Since !Minutes! minutes ago. Start: !InternetOutageStartPoint!
 ) ELSE IF DEFINED InternetOutageStartPoint (
 	TITLE Internet Outage Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
 ) ELSE (
