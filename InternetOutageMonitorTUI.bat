@@ -38,8 +38,6 @@ FOR %%X IN (!Server1! !Server2! !Server3!) DO (
 			CALL :GetDate
 			CALL :GetTime
 			CALL :LogData
-			REM ECHO.Event was written into "!LogFile!".
-			REM ECHO.The connection was re-established.
 			SET /A "ModifiedTimeout-=2"
 		)
 		SET "InternetConnectedFlag=true"
@@ -271,7 +269,6 @@ IF /i "!InternetConnectedFlag!"=="false" (
 	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
 		ECHO.
 	)
-	REM ECHO.No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!
 ) ELSE IF DEFINED InternetOutageStartPoint (
 	:::Title
 	TITLE Internet Outage Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
