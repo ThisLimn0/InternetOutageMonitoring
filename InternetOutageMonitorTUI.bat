@@ -4,6 +4,7 @@ TITLE Internet Outage Monitoring - Initialising
 COLOR 1B
 
 ::::::::::::::::::::::::::::::::::::::::::::
+SET "LogFile=.\InternetOutage!DATE!.log"
 SET "Server1=1.0.0.1" ::: Cloudflare DNS
 SET "Server2=8.8.8.8" ::: Google Public DNS
 SET "Server3=9.9.9.9" ::: Quad9 DNS
@@ -18,7 +19,7 @@ CALL :DecideConnType
 CALL :InitDispEng
 
 :MAIN
-SET "LogFile=.\InternetOutage!DATE!.log"
+CALL :DecideConnType
 CALL :GetInternetConnection
 CALL :Display
 TIMEOUT /T !ModifiedTimeout! /NOBREAK >NUL
@@ -98,6 +99,18 @@ SET "CABLE_BROKEN_L3=‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹ € ‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹‹"
 SET "CABLE_BROKEN_L4=ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ € ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ"
 SET "CABLE_BROKEN_L5=  ‹≤±≤±≤±≤±≤±≤±≤± € ±≤±≤±≤±≤±≤±≤±≤±≤±‹  "
 SET "CABLE_BROKEN_L6=   ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ € ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ   "
+SET "WRLSS_INTACT_L1=              ﬂﬂﬂﬂﬂ‹                    "
+SET "WRLSS_INTACT_L2=              ﬂﬂﬂﬂ‹ ﬂ‹                  "
+SET "WRLSS_INTACT_L3=              ﬂﬂﬂ‹ ﬂ‹ ﬂ‹                "
+SET "WRLSS_INTACT_L4=              ﬂﬂ‹ ﬂ‹ ﬂ‹ €               "
+SET "WRLSS_INTACT_L5=             ‹€€‹ﬂ‹ € € €               "
+SET "WRLSS_INTACT_L6=             ﬂ€€ﬂ ﬂ ﬂ ﬂ ﬂ               "
+SET "WRLSS_BROKEN_L1=              ﬂﬂﬂﬂﬂ‹  €                 "
+SET "WRLSS_BROKEN_L2=              ﬂﬂﬂﬂ‹  €                  "
+SET "WRLSS_BROKEN_L3=              ﬂﬂﬂ‹  €  ‹                "
+SET "WRLSS_BROKEN_L4=              ﬂﬂ‹  €  ‹ €               "
+SET "WRLSS_BROKEN_L5=             ‹€€  €   € €               "
+SET "WRLSS_BROKEN_L6=             ﬂ€  €  ﬂ ﬂ ﬂ               "
 SET "QUESTIONMARK_L1=                ‹‹ﬂﬂﬂﬂ‹‹                "
 SET "QUESTIONMARK_L2=                ﬂﬂ    €€                "
 SET "QUESTIONMARK_L3=                    ‹€ﬂ                 "
@@ -159,43 +172,113 @@ EXIT /B
 
 :Display
 CLS
+:::Case: Internet broken
 IF /i "!InternetConnectedFlag!"=="false" (
+	:::Title
 	TITLE Internet Outage Monitoring - Internet not available since !Minutes! minutes ago. Start: !InternetOutageStartPoint!
+	:::Status
 	SET "L0=!SPACER!!STATUS_BROKEN!"
-	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
-		IF DEFINED L%%A (
-			ECHO.!L%%A!
-		) ELSE IF DEFINED CABLE_BROKEN_L%%A (
-			ECHO.!SPACER!!CABLE_BROKEN_L%%A!
+	:::Connection type switch
+	IF "!ConnType!"=="Ethernet" (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED CABLE_BROKEN_L%%A (
+				ECHO.!SPACER!!CABLE_BROKEN_L%%A!
+			)
+		)
+	) ELSE IF "!ConnType!"=="WiFi" (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED WRLSS_BROKEN_L%%A (
+				ECHO.!SPACER!!WRLSS_BROKEN_L%%A!
+			)
+		)
+	) ELSE (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED QUESTIONMARK_L%%A (
+				ECHO.!SPACER!!QUESTIONMARK_L%%A!
+			)
 		)
 	)
+	:::Log display
 	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
 		ECHO.
 	)
 	REM ECHO.No connection to the Internet. This happened !Minutes! minutes ago. Start of the outage: !InternetOutageStartPoint!
+	
+:::Case: Internet reconnected
 ) ELSE IF DEFINED InternetOutageStartPoint (
+	:::Title
 	TITLE Internet Outage Monitoring - Internet available. Last outage: !InternetOutageStartPoint!
+	:::Status
 	SET "L0=!SPACER!!STATUS_INTACT!"
-	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
-		IF DEFINED L%%A (
-			ECHO.!L%%A!
-		) ELSE IF DEFINED CABLE_INTACT_L%%A (
-			ECHO.!SPACER!!CABLE_INTACT_L%%A!
+	:::Connection type switch
+	IF "!ConnType!"=="Ethernet" (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED CABLE_INTACT_L%%A (
+				ECHO.!SPACER!!CABLE_INTACT_L%%A!
+			)
+		)
+	) ELSE IF "!ConnType!"=="WiFi" (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED WRLSS_INTACT_L%%A (
+				ECHO.!SPACER!!WRLSS_INTACT_L%%A!
+			)
+		)
+	) ELSE (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED QUESTIONMARK_L%%A (
+				ECHO.!SPACER!!QUESTIONMARK_L%%A!
+			)
 		)
 	)
 	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
 		ECHO.
 	)
+	
+:::Case: Internet available	
 ) ELSE (
+	:::Title
 	TITLE Internet Outage Monitoring - Internet available.
+	:::Status
 	SET "L0=!SPACER!!STATUS_INTACT!"
-	FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
-		IF DEFINED L%%A (
-			ECHO.!L%%A!
-		) ELSE IF DEFINED CABLE_INTACT_L%%A (
-			ECHO.!SPACER!!CABLE_INTACT_L%%A!
+	:::Connection type switch
+	IF "!ConnType!"=="Ethernet" (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED CABLE_INTACT_L%%A (
+				ECHO.!SPACER!!CABLE_INTACT_L%%A!
+			)
+		)
+	) ELSE IF "!ConnType!"=="WiFi" (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED WRLSS_INTACT_L%%A (
+				ECHO.!SPACER!!WRLSS_INTACT_L%%A!
+			)
+		)
+	) ELSE (
+		FOR /L %%A IN (0,1,!STATUS_PANEL_LINE_END!) DO (
+			IF DEFINED L%%A (
+				ECHO.!L%%A!
+			) ELSE IF DEFINED QUESTIONMARK_L%%A (
+				ECHO.!SPACER!!QUESTIONMARK_L%%A!
+			)
 		)
 	)
+	
 	FOR /L %%A IN (9,1,!LOG_PANEL_LINE_END!) DO (
 		IF DEFINED NORECORD_L%%A (
 			ECHO.!SPACER!!NORECORD_L%%A!
