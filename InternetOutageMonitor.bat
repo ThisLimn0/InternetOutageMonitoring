@@ -5,17 +5,24 @@ COLOR 1B
 TITLE Internet Outage Monitoring - Initialising
 
 ::::::::::::::::::::::::::::::::::::::::::::
+SET "LogFile=.\InternetOutage!DATE!.log"
 SET "Server1=8.8.8.8" ::: Google Public DNS
 SET "Server2=1.0.0.1" ::: Cloudflare DNS
 SET "Server3=9.9.9.9" ::: Quad9 DNS
 ::::::::::::::::::::::::::::::::::::::::::::
 
+SET "InitialTimeout=30"
 SET "DefaultTimeout=60"
 SET "Minutes=0"
+SET "Once=true"
 SET "InternetConnectedFlag=true"
 
+
+
+
+TITLE Internet Outage Monitoring - Initial delay. Please wait !InitialTimeout! seconds.
+TIMEOUT /T !InitialTimeout! /NOBREAK >NUL
 :MAIN
-SET "LogFile=.\InternetOutage!DATE!.log"
 CALL :GetInternetConnection
 
 IF /i "!InternetConnectedFlag!"=="false" (
