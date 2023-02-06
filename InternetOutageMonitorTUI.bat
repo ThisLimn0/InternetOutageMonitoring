@@ -6,7 +6,7 @@ TITLE Internet Outage Monitoring - Initialising
 
 :::    /// ::::: /// :[IOMon]: /// ::::: /// :::
 :::      A pure batch Internet outage monitor.
-:::      only using the given windows utils.
+:::       only using the given windows utils.
 :::
 :::        (ccc)2023 by Limn0 @ NerdRevolt
 :::
