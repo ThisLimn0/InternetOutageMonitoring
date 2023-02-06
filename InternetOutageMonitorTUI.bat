@@ -1,5 +1,6 @@
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
+
 COLOR 1B
 TITLE Internet Outage Monitoring - Initialising
 
@@ -7,6 +8,16 @@ TITLE Internet Outage Monitoring - Initialising
 :::      A pure batch Internet outage monitor.
 :::      only using the given windows utils.
 :::
+:::        ·   ·? ? ??? .???  ·?????  ·  ?
+:::          · •??????.?·?? ?·??? ??   .
+:::        ?   ?????????????? ??· ???   ?
+:::         · ?????????????•????. ?? .   .
+:::        ?   ?? ?? ??? .?  ??????•  ?
+:::        ???  ??? . ? ?·  .   ??? ??????
+:::        ?? ?·??.?·??·???     ??•  •??
+:::        ???? ?????????• ???? ???   ??.?
+:::        ??•??????? ??? ???.??????? ???·
+:::        .?  ? ??? . ?   ?????.???  ???
 :::        (ccc)2023 by Limn0 @ NerdRevolt
 :::
 :::    /// ::: /// ::: /// ::: /// ::: /// :::
@@ -277,52 +288,52 @@ EXIT /B
 :SetGraphics
 :::This function sets the text graphics for the console window.
 SET "SPACER=                                       "
-SET "DIV_LINE=ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
-SET "VERT_DIV=ï¿½"
-SET "CABLE_INTACT_L1=   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   "
-SET "CABLE_INTACT_L2=  ß±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  "
-SET "CABLE_INTACT_L3=ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
-SET "CABLE_INTACT_L4=ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
-SET "CABLE_INTACT_L5=  Ü²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  "
-SET "CABLE_INTACT_L6=   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   "
-SET "CABLE_BROKEN_L1=   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   "
-SET "CABLE_BROKEN_L2=  ß±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  "
-SET "CABLE_BROKEN_L3=ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
-SET "CABLE_BROKEN_L4=ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
-SET "CABLE_BROKEN_L5=  Ü²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  "
-SET "CABLE_BROKEN_L6=   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   "
-SET "WRLSS_INTACT_L1=              ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                    "
-SET "WRLSS_INTACT_L2=              ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½                  "
-SET "WRLSS_INTACT_L3=              ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½                "
-SET "WRLSS_INTACT_L4=              ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½               "
-SET "WRLSS_INTACT_L5=             ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ ï¿½               "
-SET "WRLSS_INTACT_L6=             ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ ï¿½ ï¿½               "
-SET "WRLSS_BROKEN_L1=              ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½                 "
-SET "WRLSS_BROKEN_L2=              ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½                  "
-SET "WRLSS_BROKEN_L3=              ï¿½ï¿½ï¿½ï¿½  ï¿½  ï¿½                "
-SET "WRLSS_BROKEN_L4=              ï¿½ï¿½ï¿½  ï¿½  ï¿½ ï¿½               "
-SET "WRLSS_BROKEN_L5=             ï¿½ï¿½ï¿½  ï¿½   ï¿½ ï¿½               "
-SET "WRLSS_BROKEN_L6=             ï¿½ï¿½  ï¿½  ï¿½ ï¿½ ï¿½               "
-SET "QUESTIONMARK_L1=                ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                "
-SET "QUESTIONMARK_L2=                ï¿½ï¿½    ï¿½ï¿½                "
-SET "QUESTIONMARK_L3=                    ï¿½ï¿½ï¿½                 "
-SET "QUESTIONMARK_L4=                   ï¿½ï¿½ï¿½                  "
-SET "QUESTIONMARK_L5=                   ï¿½ï¿½                   "
-SET "QUESTIONMARK_L6=                   ï¿½ï¿½                   "
-SET "PRERNTIMEOUT_L1=              ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½              "
-SET "PRERNTIMEOUT_L2=              ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½              "
-SET "PRERNTIMEOUT_L3=              ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½              "
-SET "PRERNTIMEOUT_L4=              ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½              "
-SET "PRERNTIMEOUT_L5=              ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½              "
-SET "PRERNTIMEOUT_L6=              ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½              "
+SET "DIV_LINE=ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ"
+SET "VERT_DIV=³"
+SET "CABLE_INTACT_L1=   ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ   "
+SET "CABLE_INTACT_L2=  ß±²±²±²±²±²±²±²±²±²±²±²±²±²±²±²±²±²ß  "
+SET "CABLE_INTACT_L3=ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ"
+SET "CABLE_INTACT_L4=ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß"
+SET "CABLE_INTACT_L5=  Ü²±²±²±²±²±²±²±²±²±²±²±²±²±²±²±²±²±Ü  "
+SET "CABLE_INTACT_L6=   ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß   "
+SET "CABLE_BROKEN_L1=   ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ Û ÜÜÜÜÜÜÜÜÜÜÜÜÜ   "
+SET "CABLE_BROKEN_L2=  ß±²±²±²±²±²±²±²±²± Û ±²±²±²±²±²±²±²ß  "
+SET "CABLE_BROKEN_L3=ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ Û ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ"
+SET "CABLE_BROKEN_L4=ßßßßßßßßßßßßßßßßßß Û ßßßßßßßßßßßßßßßßßßß"
+SET "CABLE_BROKEN_L5=  Ü²±²±²±²±²±²±²± Û ±²±²±²±²±²±²±²±²±Ü  "
+SET "CABLE_BROKEN_L6=   ßßßßßßßßßßßßß Û ßßßßßßßßßßßßßßßßßß   "
+SET "WRLSS_INTACT_L1=              ßßßßßÜ                    "
+SET "WRLSS_INTACT_L2=              ßßßßÜ ßÜ                  "
+SET "WRLSS_INTACT_L3=              ßßßÜ ßÜ ßÜ                "
+SET "WRLSS_INTACT_L4=              ßßÜ ßÜ ßÜ Û               "
+SET "WRLSS_INTACT_L5=             ÜÛÛÜßÜ Û Û Û               "
+SET "WRLSS_INTACT_L6=             ßÛÛß ß ß ß ß               "
+SET "WRLSS_BROKEN_L1=              ßßßßßÜ  Û                 "
+SET "WRLSS_BROKEN_L2=              ßßßßÜ  Û                  "
+SET "WRLSS_BROKEN_L3=              ßßßÜ  Û  Ü                "
+SET "WRLSS_BROKEN_L4=              ßßÜ  Û  Ü Û               "
+SET "WRLSS_BROKEN_L5=             ÜÛÛ  Û   Û Û               "
+SET "WRLSS_BROKEN_L6=             ßÛ  Û  ß ß ß               "
+SET "QUESTIONMARK_L1=                ÜÜßßßßÜÜ                "
+SET "QUESTIONMARK_L2=                ßß    ÛÛ                "
+SET "QUESTIONMARK_L3=                    ÜÛß                 "
+SET "QUESTIONMARK_L4=                   ÜÛß                  "
+SET "QUESTIONMARK_L5=                   ßß                   "
+SET "QUESTIONMARK_L6=                   ÛÛ                   "
+SET "PRERNTIMEOUT_L1=              ÜÜÜÜ    ÜÜÜÜ              "
+SET "PRERNTIMEOUT_L2=              ÛÛÛÛ    ÛÛÛÛ              "
+SET "PRERNTIMEOUT_L3=              ÛÛÛÛ    ÛÛÛÛ              "
+SET "PRERNTIMEOUT_L4=              ÛÛÛÛ    ÛÛÛÛ              "
+SET "PRERNTIMEOUT_L5=              ÛÛÛÛ    ÛÛÛÛ              "
+SET "PRERNTIMEOUT_L6=              ÛÛÛÛ    ÛÛÛÛ              "
 SET "LOGVIEW_STATUS_L9=Recent detected Internet outages:      "
 SET "LOGVIEW_STATUS_L11=	Now |  "
 SET "STATUS_INTACT=          Internet available.           "
 SET "STATUS_BROKEN=        Internet not available.         "
 SET "STATUS_QUESTN=                   ??                   "
-SET "NORECORD_L17=        ï¿½ï¿½                    ï¿½ï¿½        "
-SET "NORECORD_L18=        ï¿½     No records.      ï¿½        "
-SET "NORECORD_L19=        ï¿½ï¿½                    ï¿½ï¿½        "
+SET "NORECORD_L17=        Ûß                    ßÛ        "
+SET "NORECORD_L18=        Û     No records.      Û        "
+SET "NORECORD_L19=        ÛÜ                    ÜÛ        "
 EXIT /B
 
 
@@ -512,18 +523,18 @@ EXIT /B
 :::--------------------------------------------------
 :::Recent detected internet outages:
 :::
-:::         Now ï¿½   No connection to the Internet. This happened 43 minutes ago. Start of the outage: 06.02.2023 20:06:26
+:::         Now ¦   No connection to the Internet. This happened 43 minutes ago. Start of the outage: 06.02.2023 20:06:26
 :::
-:::  03.01.2023 ï¿½   16:22:12 Outage: 8 minutes.
-:::             ï¿½   09:54:07 Outage: 19 minutes.
-:::             ï¿½   06:14:59 Outage: 2 minutes.
-:::             ï¿½   03:44:22 Connection change: Ethernet to WiFi
-:::             ï¿½   01:25:59 Outage: 2 minutes.
+:::  03.01.2023 ¦   16:22:12 Outage: 8 minutes.
+:::             ¦   09:54:07 Outage: 19 minutes.
+:::             ¦   06:14:59 Outage: 2 minutes.
+:::             ¦   03:44:22 Connection change: Ethernet to WiFi
+:::             ¦   01:25:59 Outage: 2 minutes.
 :::
-:::  02.01.2023 ï¿½   14:34:23 Outage: 80 minutes.
-:::             ï¿½   07:57:03 Outage: 1 minutes.
-:::             ï¿½   07:14:54 Outage: 5 minutes.
-:::             ï¿½   07:03:00 Record start - detected connection type: Ethernet
+:::  02.01.2023 ¦   14:34:23 Outage: 80 minutes.
+:::             ¦   07:57:03 Outage: 1 minutes.
+:::             ¦   07:14:54 Outage: 5 minutes.
+:::             ¦   07:03:00 Record start - detected connection type: Ethernet
 :::--------------------------------------------------
 
 IF NOT EXIST "!MachineLog!" (
@@ -628,10 +639,9 @@ SET /A CurrentCalcLine=%LOG_PANEL_LINE_END%-%LinesLeft%
 :::If first line of file, display date on the left of divider
 IF "!FirstLine!" EQU "true" (
 	:::If first line of file, display date on the left of divider
-	SET "LOGPANEL_L!CurrentCalcLine!=!TAB!!Date! |!TAB!!Time!"
+	SET "LOGPANEL_L!CurrentCalcLine!=.!TAB!!Date! |!TAB!!Time!"
 ) ELSE (
-	:::If not first line of file, just display time on the right of divider
-	SET "LOGPANEL_L!CurrentCalcLine!=!TAB!!Time!"
+	
 )
 IF "!LOG_EVENT!"=="RECORD_START" (
 	ECHO.!YYYY!.!MO!.!DD!;!HH!:!MI!:!SS!:!MS!;!LOG_EVENT!;!LOG_CONNECTIONTYPE!
