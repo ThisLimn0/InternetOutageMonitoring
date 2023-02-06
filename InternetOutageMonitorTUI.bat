@@ -644,7 +644,6 @@ IF "!FirstLine!" EQU "true" (
 	:::If not first line of file, just display time on the right of divider
 	SET "LOGPANEL_L!CurrentCalcLine!=!TAB!!Time!"
 )
-)
 IF "!LOG_EVENT!"=="RECORD_START" (
 	ECHO.!YYYY!.!MO!.!DD!;!HH!:!MI!:!SS!:!MS!;!LOG_EVENT!;!LOG_CONNECTIONTYPE!
 )
